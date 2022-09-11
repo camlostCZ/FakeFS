@@ -36,16 +36,16 @@ operations. These operations have their traditional names:
 
 ## Folder Oprations
 
-| Operation | Description                                    |
-|-----------|------------                                    |
-| cd        | Change current folder                          |
-| cp        | Copy a node to another folder                  |
-| ls        | List folder contents, i.e. nodes in the folder |
-| mkdir     | Create a new folder (*make directory*)         |
-| mv        | Move a node to another folder                  |
-| pwd       | Get current folder path                        |
-| rmdir     | Remove an empty folder (*remove directory*)    |
-| tree      | Display filesystem nodes in a tree             |
+| Operation | Description                                         |
+|-----------|------------                                         |
+| cd        | Change current folder                               |
+| cp        | Copy a node to another folder (tricky - deep copy!) |
+| ls        | List folder contents, i.e. nodes in the folder      |
+| mkdir     | Create a new folder (*make directory*)              |
+| mv        | Move a node to another folder                       |
+| pwd       | Get current folder path                             |
+| rmdir     | Remove an empty folder (*remove directory*)         |
+| tree      | Display filesystem nodes in a tree                  |
 
 ## File operations
 
