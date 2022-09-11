@@ -7,6 +7,8 @@ I took it as an inspiration and tried to develop a fake filesystem
 with several commands which would actually do something
 *almost* real.
 
+> **Note** I quite like Python 3.10 new features so it's required.
+
 ## Basic Assupmtions
 
 Filesystem has a name as there might be several filesystems mounted in an OS
