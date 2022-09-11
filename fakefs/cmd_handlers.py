@@ -2,7 +2,8 @@ import functools
 
 from textwrap import dedent
 
-from fake_filesystem import Filesystem, FilesystemError
+from filesystem import Filesystem
+from filesystemerror import FilesystemError
 
 
 def cmd_handler(func):
