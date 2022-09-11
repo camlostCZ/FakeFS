@@ -1,3 +1,4 @@
+from re import T
 from typing import Optional
 
 from file import File
@@ -74,14 +75,14 @@ class Filesystem(Folder):
             names = sorted(node.nodes.keys())
             for n in names:
                 result.append(f"{level_sep * depth} {n}")
-                if node.nodes[n].type_symbol == Folder.SYMBOL:
+                if isinstance(node.nodes[n], Folder):
                     subtree = self.get_node_tree(node.nodes[n], level_sep, depth + 1)
                     result.extend(subtree)
         return result
 
     def remove_file(self, name: str):
         node = self.curdir.nodes.get(name)
-        if node is not None and node.type_symbol == File.SYMBOL:
+        if isinstance(node, File):
             self.curdir._remove_node(node)
         else:
             raise FilesystemError(f"File '{name}' not found.")
@@ -113,7 +114,7 @@ class Filesystem(Folder):
                         raise FilesystemError(f"Invalid path '{path}'.")
                 else:  # Go down
                     cd = cd.nodes.get(name)
-                    if not cd or cd.type_symbol != Folder.SYMBOL:
+                    if not isinstance(cd, Folder):
                         raise FilesystemError(f"'{name}' is not a folder in '{path}'.")
             result = cd
         return result
@@ -125,7 +126,7 @@ class Filesystem(Folder):
         if idx > -1:
             cwd = self.search_folder(path[:idx])
         node = cwd.nodes.get(path[idx + 1:])
-        if node and node.type_symbol == File.SYMBOL:
+        if isinstance(node, File):
             result = node
         else:
             raise FilesystemError(f"File '{path}' not found.")
