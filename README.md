@@ -1,6 +1,6 @@
 # FakeFS
 
-This fun project has been created as a response to a series of qeustions
+This fun project has been created as a response to a series of questions
 in the [/r/learnpython](https://www.reddit.com/r/learnpython) subreddit.
 
 I took it as an inspiration and tried to develop a fake filesystem
