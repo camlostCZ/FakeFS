@@ -32,6 +32,15 @@ class Filesystem(Folder):
             self.curdir = cd
 
     def get_node_path(self, node: Node) -> str:
+        """
+        Get node path (using the path_separator).
+
+        Args:
+            node (Node): Node to get path to.
+
+        Returns:
+            str: Path from root to the node.
+        """
         result = ""
         nodes = []
         while node.parent is not None:
@@ -48,10 +57,22 @@ class Filesystem(Folder):
             raise FilesystemError(f"File '{name}' not found.")
 
     def search_folder(self, path: str) -> Optional[Folder]:
+        """
+        Search for folder by path.
+
+        Args:
+            path (str): Path to a folder.
+
+        Raises:
+            FilesystemError: If non-existing path detectd.
+
+        Returns:
+            Optional[Folder]: Folder if found at the path, None otherwise.
+        """
         result = None
         if path:
-            cd = self if path[0] == Filesystem.SEPARATOR else self.curdir
-            path_names = path.split(Filesystem.SEPARATOR)
+            cd = self if path[0] == self.path_separator else self.curdir
+            path_names = path.split(self.path_separator)
             for name in path_names:
                 if name == "" or name == ".":  # Skip
                     continue
@@ -70,7 +91,7 @@ class Filesystem(Folder):
     def search_file(self, path: str) -> Optional[File]:
         result = None
         cwd = self.curdir
-        idx = path.rfind(Filesystem.SEPARATOR)
+        idx = path.rfind(self.path_separator)
         if idx > -1:
             cwd = self.search_folder(path[:idx])
         node = cwd.nodes.get(path[idx + 1:])
