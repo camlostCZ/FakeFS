@@ -1,1 +1,4 @@
 /.*/
+
+# Original source. Not needed anymore.
+fakefs/fake_filesystem.py
