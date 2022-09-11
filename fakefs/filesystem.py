@@ -3,6 +3,7 @@ from typing import Optional
 from file import File
 from filesystemerror import FilesystemError
 from folder import Folder
+from node import Node
 
 
 class Filesystem(Folder):
@@ -11,12 +12,13 @@ class Filesystem(Folder):
     """
 
     SEPARATOR = '/'
-    SYMBOL = '/'
+    SYMBOL = '#'
 
-    def __init__(self, name: str):
+    def __init__(self, name: str, path_separator: str = SEPARATOR):
         self.curdir = self
         super().__init__(name)
         self.type_symbol = Filesystem.SYMBOL
+        self.path_separator = path_separator
 
     def add_folder(self, name: str):
         self.curdir._add_node(Folder(name))
@@ -28,6 +30,15 @@ class Filesystem(Folder):
         cd = self.search_folder(path)
         if cd:
             self.curdir = cd
+
+    def get_node_path(self, node: Node) -> str:
+        result = ""
+        nodes = []
+        while node.parent is not None:
+            nodes.insert(0, node.name)
+            node = node.parent
+        result = self.path_separator + self.path_separator.join(nodes)
+        return result
 
     def remove_file(self, name: str):
         node = self.curdir.nodes.get(name)

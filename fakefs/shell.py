@@ -1,6 +1,6 @@
 from typing import Any
 
-from fake_filesystem import Filesystem, FilesystemError
+from filesystem import Filesystem
 from cmd_handlers import (
     handle_cat, handle_cd, handle_edit, handle_help, handle_invalid_cmd,
     handle_ls, handle_mkdir, handle_rm, handle_touch
@@ -28,12 +28,13 @@ def parse_cmd(txt: str) -> tuple[str, Any]:
 
 
 def update_prompt(fs: Filesystem) -> str:
-    result = f"{fs.curdir.abs_path}> "
+    path = fs.get_node_path(fs.curdir)
+    result = f"{fs.name}#{path} > "
     return result
 
 
 def main():
-    fs = Filesystem("fake_01")
+    fs = Filesystem("fake_fs")
 
     finished = False
     while not finished:
