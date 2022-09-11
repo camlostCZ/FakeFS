@@ -6,14 +6,17 @@ from filesystem import Filesystem
 from filesystemerror import FilesystemError
 
 
-def cmd_handler(func):
+def cmd_handler(func, default_param: str = "./"):
     @functools.wraps(func)
     def wrapper(*args, **kwargs):
         result = None
         if len(args) == 2:
             parsed = args[1].strip().split(" ")
-            if len(parsed) == 2:
-                cmd, param = parsed
+            num_args = len(parsed)
+            param = default_param
+            if num_args == 2:
+                _, param = parsed
+            if num_args in (1, 2):
                 try:
                     result = func(args[0], param, *args[2:], **kwargs)
                 except FilesystemError as e:
@@ -97,3 +100,9 @@ def handle_rm(fs: Filesystem, param: str):
 @cmd_handler
 def handle_touch(fs: Filesystem, param: str):
     fs.add_file(param)
+
+@cmd_handler
+def handle_tree(fs: Filesystem, param: str):
+    node = fs.search_folder(param)
+    for line in fs.get_node_tree(node, "----"):
+        print(line)

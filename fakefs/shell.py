@@ -3,7 +3,7 @@ from typing import Any
 from filesystem import Filesystem
 from cmd_handlers import (
     handle_cat, handle_cd, handle_edit, handle_help, handle_invalid_cmd,
-    handle_ls, handle_mkdir, handle_rm, handle_touch
+    handle_ls, handle_mkdir, handle_rm, handle_touch, handle_tree
 )
 
 COMMANDS = {
@@ -15,7 +15,8 @@ COMMANDS = {
     "touch": handle_touch,
     "cd": handle_cd,
     "cat": handle_cat,
-    "edit": handle_edit
+    "edit": handle_edit,
+    "tree": handle_tree
 }
 
 
@@ -36,6 +37,8 @@ def update_prompt(fs: Filesystem) -> str:
 def main():
     fs = Filesystem("fake_fs")
 
+    # TODO "Mount" (load from a file) filesystem if already exists
+
     finished = False
     while not finished:
         prompt = update_prompt(fs)
@@ -48,6 +51,8 @@ def main():
             case (_, cmd_handler): cmd_handler(fs, text)
         # /match
     # /while
+
+    # TODO "Unmount" filesystem (save to a file)
 
 
 if __name__ == "__main__":

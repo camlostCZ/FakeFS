@@ -49,6 +49,36 @@ class Filesystem(Folder):
         result = self.path_separator + self.path_separator.join(nodes)
         return result
 
+    def get_node_tree(
+            self,
+            node: Node,
+            level_sep: str,
+            depth: int = 1) -> list[str]:
+        """
+        Get visual tree representation of node content.
+
+        Args:
+            node (Node): Node for which tree is generated
+            level_sep (str): String used to indend level
+            depth (int, optional): Tree level / depth. Defaults to 1.
+
+        Returns:
+            list[str]: List of (indented) node names visually representing
+                a tree.
+        """
+        if depth >= 20:
+            raise FilesystemError("Tree to deep.")
+
+        result = []
+        if node is not None:
+            names = sorted(node.nodes.keys())
+            for n in names:
+                result.append(f"{level_sep * depth} {n}")
+                if node.nodes[n].type_symbol == Folder.SYMBOL:
+                    subtree = self.get_node_tree(node.nodes[n], level_sep, depth + 1)
+                    result.extend(subtree)
+        return result
+
     def remove_file(self, name: str):
         node = self.curdir.nodes.get(name)
         if node is not None and node.type_symbol == File.SYMBOL:
