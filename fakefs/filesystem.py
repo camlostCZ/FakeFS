@@ -121,13 +121,41 @@ class Filesystem(Folder):
 
     def search_file(self, path: str) -> Optional[File]:
         result = None
-        cwd = self.curdir
-        idx = path.rfind(self.path_separator)
-        if idx > -1:
-            cwd = self.search_folder(path[:idx])
-        node = cwd.nodes.get(path[idx + 1:])
-        if isinstance(node, File):
-            result = node
-        else:
+        fld_path, filename = self.split_path(path)
+        conditions = [
+            filename is not None,
+            (fld := self.search_folder(fld_path)) is not None,
+            (result := fld.nodes.get(filename)) is not None,
+            isinstance(result, File)
+        ]
+        if not all(conditions):
             raise FilesystemError(f"File '{path}' not found.")
         return result
+
+    def search_parent(self, path: str) -> Optional[Folder]:
+        result = None
+        idx = path.rfind(self.path_separator)
+        if idx > -1:
+            result = self.search_folder(path[:idx])
+        return result
+
+    def split_path(self, path: str) -> tuple[str, str]:
+        """
+        Split path to folder path and filename.
+
+        Args:
+            path (str): Path to a node
+
+        Returns:
+            tuple[str, str]: Tuple of folder path, filename. Filename is an
+                empty string if not found.
+        """
+        idx = path.rfind(self.path_separator)
+        if idx > -1:
+            fld_path = path[:idx]
+            filename = path[idx + 1:]
+        else:
+            fld_path = path
+            filename = ""
+        # BUG Doesn't work for files in the root folder.
+        return (fld_path, filename)

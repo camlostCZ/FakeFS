@@ -104,5 +104,5 @@ def handle_touch(fs: Filesystem, param: str):
 @cmd_handler
 def handle_tree(fs: Filesystem, param: str):
     node = fs.search_folder(param)
-    for line in fs.get_node_tree(node, "----"):
+    for line in fs.get_node_tree(node, "---"):
         print(line)
